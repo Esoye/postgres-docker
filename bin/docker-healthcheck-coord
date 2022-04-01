@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash
 
 bootstrapped=.bootstrapped
 sleep_int_max=30

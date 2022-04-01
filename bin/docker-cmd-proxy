@@ -1,4 +1,4 @@
-#!/bin/sh -eu
+#!/bin/sh
 
 exec gtm_proxy \
     -D "${PGDATA}" \

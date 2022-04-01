@@ -5,7 +5,9 @@ services:
       - PG_HOST=0.0.0.0
       - PG_NODE=gtm_1
       - PG_PORT=6666
+#      - PG_PASSWORD=dafei1288
     build: .
+    image: z_db_gtm_1
     command: docker-cmd-gtm
     entrypoint: docker-entrypoint-gtm
     volumes:
@@ -15,13 +17,17 @@ services:
     healthcheck:
       test: ["CMD", "docker-healthcheck-gtm"]
   db_coord_1:
+    ports:
+      - "25432:5432"
     environment:
       - PG_GTM_HOST=db_gtm_1
       - PG_GTM_PORT=6666
       - PG_HOST=0.0.0.0
       - PG_NODE=coord_1
       - PG_PORT=5432
+      - PG_PASSWORD=dafei1288
     build: .
+    image: z_db_coord_1
     command: docker-cmd-coord
     entrypoint: docker-entrypoint-coord
     volumes:
@@ -34,13 +40,17 @@ services:
     healthcheck:
       test: ["CMD", "docker-healthcheck-coord"]
   db_coord_2:
+    ports:
+      - "25433:5432"
     environment:
       - PG_GTM_HOST=db_gtm_1
       - PG_GTM_PORT=6666
       - PG_HOST=0.0.0.0
       - PG_NODE=coord_2
       - PG_PORT=5432
+      - PG_PASSWORD=dafei1288
     build: .
+    image: z_db_coord_2
     command: docker-cmd-coord
     entrypoint: docker-entrypoint-coord
     volumes:
@@ -59,7 +69,9 @@ services:
       - PG_HOST=0.0.0.0
       - PG_NODE=data_1
       - PG_PORT=5432
+#      - PG_PASSWORD=dafei1288
     build: .
+    image: z_db_data_1
     command: docker-cmd-data
     entrypoint: docker-entrypoint-data
     depends_on:
@@ -77,7 +89,9 @@ services:
       - PG_HOST=0.0.0.0
       - PG_NODE=data_2
       - PG_PORT=5432
+#      - PG_PASSWORD=dafei1288
     build: .
+    image: z_db_data_2
     command: docker-cmd-data
     entrypoint: docker-entrypoint-data
     depends_on:
@@ -88,6 +102,17 @@ services:
       - db_a
     healthcheck:
       test: ["CMD", "docker-healthcheck-data"]
+  pgpool:
+    image: smirart/pgpool:latest
+    ports:
+      - "5432:5432"
+#    environment:
+#      - PG_PASSWORD=dafei1288
+    volumes:
+      - ./pgpool.conf:/etc/pgpool/pgpool.conf
+    restart: always
+    networks:
+      - db_b
 volumes:
   db_gtm_1: {}
   db_coord_1: {}

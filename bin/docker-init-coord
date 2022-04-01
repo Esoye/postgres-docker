@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash
 
 initdb \
     -D "${PGDATA}" \
@@ -7,6 +7,21 @@ initdb \
 nets=($(ip -o -f inet addr show | awk '/scope global/ {print $4}' |
     sort -V | xargs))
 
+echo "pg_hba: adding host trust all"
+echo "local   all   all     trust" > \
+     "${PGDATA}/pg_hba.conf"
+
+
+
+
+echo "pg_hba: adding 127.0.0.1/32 trust all"
+echo "host	all	all	127.0.0.1/32	trust" >> \
+    "${PGDATA}/pg_hba.conf"
+
+echo "pg_hba: adding pgpool trust all"
+echo "host	all	all	pgpool	trust" >> \
+    "${PGDATA}/pg_hba.conf"
+
 echo "pg_hba: adding host trust ${nets[0]}"
 
 echo "host	all	all	${nets[0]}	trust" >> \
@@ -14,5 +29,8 @@ echo "host	all	all	${nets[0]}	trust" >> \
 
 echo "pg_hba: adding host md5 ${nets[1]}"
 
-echo "host	all	all	${nets[1]}	md5" >> \
+echo "host	all	all	${nets[1]}	trust" >> \
     "${PGDATA}/pg_hba.conf"
+
+#echo "local   all             all                                     trust" > "${PGDATA}/pg_hba.conf"
+#echo "host all all 0.0.0.0/0 trust" > "${PGDATA}/pg_hba.conf"

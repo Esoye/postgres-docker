@@ -23,13 +23,14 @@ RUN yum install -y \
                 make \
                 gcc-c++ \
                 net-tools \
-                iproute
+                iproute \
+                lsof
 
 RUN yum clean all
-
+#${PG_HOME}/data
 RUN useradd ${PG_USER} -d ${PG_HOME} && \
-    mkdir -p ${PG_LIB} ${PG_HOME}  ${PG_HOME}/data && \
-    chown -R ${PG_USER}:${PG_USER} ${PG_LIB} ${PG_HOME} ${PG_HOME}/data
+    mkdir -p ${PG_LIB} ${PG_HOME}   && \
+    chown -R ${PG_USER}:${PG_USER} ${PG_LIB} ${PG_HOME}
 
 #-------------------------------------------------------------------------------
 WORKDIR ${PG_HOME}

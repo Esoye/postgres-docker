@@ -27,8 +27,8 @@ RUN yum install -y \
 RUN yum clean all
 
 RUN useradd ${PG_USER} -d ${PG_HOME} && \
-    mkdir -p ${PG_LIB} ${PG_HOME} ${PG_HOME}/data && \
-    chown -R ${PG_USER}:${PG_USER} ${PG_LIB} ${PG_HOME} ${PG_HOME}/data
+    mkdir -p ${PG_LIB} ${PG_HOME}  && \
+    chown -R ${PG_USER}:${PG_USER} ${PG_LIB} ${PG_HOME}
 #-------------------------------------------------------------------------------
 USER ${PG_USER}
 

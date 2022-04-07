@@ -8,10 +8,14 @@ nets=($(ip -o -f inet addr show | awk '/scope global/ {print $4}' |
     sort -V | xargs))
 
 
-echo "pg_hba: adding local   all  trust"
-echo "local   all   all   trust" > \
+echo "pg_hba: adding host 0.0.0.0/0 trust all"
+echo "host    all    all    all    trust" > \
      "${PGDATA}/pg_hba.conf"
 
+echo "pg_hba: adding local   all  trust"
+echo "local   all   all   trust" >> \
+     "${PGDATA}/pg_hba.conf"
+#
 echo "pg_hba: adding 127.0.0.1/32   all  trust"
 echo "host	all	all	127.0.0.1/32	trust" >> \
     "${PGDATA}/pg_hba.conf"

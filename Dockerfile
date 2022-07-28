@@ -1,12 +1,13 @@
 #===============================================================================
-# FROMFREEZE docker.io/library/debian:9
 FROM centos:centos7
-#docker.io/library/debian@sha256:d844caef45253dab4cb7543b5781f529c1c3f140fcf9cd6172e1d6cb616a51c3
 
 ARG PG_HOME=/var/lib/postgresql
 ARG PG_LIB=/usr/local/lib/postgresql
 ARG PG_USER=postgres
+
 #-------------------------------------------------------------------------------
+
+RUN echo "root:root" | chpasswd
 
 #RUN yum upgrade
 RUN yum install -y \
@@ -24,7 +25,9 @@ RUN yum install -y \
                 gcc-c++ \
                 net-tools \
                 iproute \
-                lsof
+                lsof \
+                ant \
+                java
 
 RUN yum clean all
 #${PG_HOME}/data
@@ -36,18 +39,23 @@ RUN useradd ${PG_USER} -d ${PG_HOME} && \
 WORKDIR ${PG_HOME}
 
 COPY --chown=postgres:postgres lib/ ./lib/
-#COPY --chown=postgres:postgres pg_hba.conf ${PG_HOME}/data/pg_hba.conf
 #-------------------------------------------------------------------------------
 USER ${PG_USER}
 
-WORKDIR ${PG_HOME}/lib/postgres-xl
+WORKDIR ${PG_HOME}/lib/postgres-xc
 
 RUN ./configure --prefix ${PG_LIB} && \
     make && \
     cd contrib/pgxc_monitor && \
     make
+
+WORKDIR ${PG_HOME}/lib/benchmarksql
+
+RUN ant
 #-------------------------------------------------------------------------------
 USER root
+
+WORKDIR ${PG_HOME}/lib/postgres-xc
 
 RUN make install && \
     cd contrib/pgxc_monitor && \

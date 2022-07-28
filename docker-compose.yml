@@ -5,9 +5,8 @@ services:
       - PG_HOST=0.0.0.0
       - PG_NODE=gtm_1
       - PG_PORT=6666
-#      - PG_PASSWORD=dafei1288
     build: .
-#    image: z_db_gtm_1
+    hostname: db_gtm_1
     command: docker-cmd-gtm
     entrypoint: docker-entrypoint-gtm
     volumes:
@@ -25,15 +24,12 @@ services:
       - PG_HOST=0.0.0.0
       - PG_NODE=coord_1
       - PG_PORT=5432
-#      - PG_PASSWORD=dafei1288
     build: .
-#    privileged: true
-#    image: z_db_coord_1
+    hostname: db_coord_1
     command: docker-cmd-coord
     entrypoint: docker-entrypoint-coord
     volumes:
       - db_coord_1:/var/lib/postgresql
-#      - db_coord_1:/usr/sbin/init
     depends_on:
       - db_gtm_1
     networks:
@@ -50,15 +46,12 @@ services:
       - PG_HOST=0.0.0.0
       - PG_NODE=coord_2
       - PG_PORT=5432
-#      - PG_PASSWORD=dafei1288
     build: .
-#    privileged: true
-#    image: z_db_coord_2
+    hostname: db_coord_2
     command: docker-cmd-coord
     entrypoint: docker-entrypoint-coord
     volumes:
       - db_coord_2:/var/lib/postgresql
-#      - db_coord_2:/usr/sbin/init
     depends_on:
       - db_gtm_1
     networks:
@@ -75,9 +68,8 @@ services:
       - PG_HOST=0.0.0.0
       - PG_NODE=data_1
       - PG_PORT=5432
-#      - PG_PASSWORD=dafei1288
     build: .
-#    image: z_db_data_1
+    hostname: db_data_1
     command: docker-cmd-data
     entrypoint: docker-entrypoint-data
     depends_on:
@@ -86,6 +78,7 @@ services:
       - db_data_1:/var/lib/postgresql
     networks:
       - db_a
+      - db_b
     healthcheck:
       test: ["CMD", "docker-healthcheck-data"]
   db_data_2:
@@ -97,9 +90,8 @@ services:
       - PG_HOST=0.0.0.0
       - PG_NODE=data_2
       - PG_PORT=5432
-#      - PG_PASSWORD=dafei1288
     build: .
-#    image: z_db_data_2
+    hostname: db_data_2
     command: docker-cmd-data
     entrypoint: docker-entrypoint-data
     depends_on:
@@ -108,26 +100,9 @@ services:
       - db_data_2:/var/lib/postgresql
     networks:
       - db_a
+      - db_b
     healthcheck:
       test: ["CMD", "docker-healthcheck-data"]
-  pgpool:
-#    image: smirart/pgpool:latest
-    image: postdock/pgpool:latest
-    ports:
-      - "8686:8686"
-      - "8687:5432"
-      - "8688:9898"
-#    environment:
-#      - PG_PASSWORD=dafei1288
-    volumes:
-#      - ./pgpool.conf_2:/usr/local/etc/pgpool.conf
-      - ./pgpool.conf:/var/pgpool_configs/pgpool.conf
-#      - /var/pgpool_configs/pgpool.conf
-#      - ./dafei1288:/var/pgpool_configs/dafei1288
-#      - ./pgpool_hba.conf:/usr/local/etc/pool_hba.conf
-    restart: always
-    networks:
-      - db_b
 volumes:
   db_gtm_1: {}
   db_coord_1: {}

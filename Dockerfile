@@ -27,7 +27,8 @@ RUN yum install -y \
                 iproute \
                 lsof \
                 ant \
-                java
+                java \
+                gdb
 
 RUN yum clean all
 #${PG_HOME}/data

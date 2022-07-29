@@ -9,6 +9,8 @@ services:
     hostname: db_gtm_1
     command: docker-cmd-gtm
     entrypoint: docker-entrypoint-gtm
+    cap_add:
+      - ALL
     volumes:
       - db_gtm_1:/var/lib/postgresql
     networks:
@@ -28,6 +30,8 @@ services:
     hostname: db_coord_1
     command: docker-cmd-coord
     entrypoint: docker-entrypoint-coord
+    cap_add:
+      - ALL
     volumes:
       - db_coord_1:/var/lib/postgresql
     depends_on:
@@ -50,6 +54,8 @@ services:
     hostname: db_coord_2
     command: docker-cmd-coord
     entrypoint: docker-entrypoint-coord
+    cap_add:
+      - ALL
     volumes:
       - db_coord_2:/var/lib/postgresql
     depends_on:
@@ -72,6 +78,8 @@ services:
     hostname: db_data_1
     command: docker-cmd-data
     entrypoint: docker-entrypoint-data
+    cap_add:
+      - ALL
     depends_on:
       - db_gtm_1
     volumes:
@@ -94,6 +102,8 @@ services:
     hostname: db_data_2
     command: docker-cmd-data
     entrypoint: docker-entrypoint-data
+    cap_add:
+      - ALL
     depends_on:
       - db_gtm_1
     volumes:

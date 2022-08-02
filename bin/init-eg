@@ -28,7 +28,7 @@ function cmd() {
     shift
 
     log "$@"
-    srv "$node" psql -c "$@"
+    srv "$node" psql -d postgres -c "$@"
 }
 
 trap shutdown EXIT

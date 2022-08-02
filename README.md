@@ -1,5 +1,18 @@
 # Postgres-XL Docker
 
+
+## 下面太长暂时不看
+
+1. 做了点修改，可以编译xc或者xl，直接把源码放在lib文件夹下即可
+2. 使用`docker-compose up`直接启动
+3. 然后在bin 目录下执行init-eg，初始化集群信息
+4. 现在可以正常使用
+
+* 可以使用gdb调试
+* dockerfle中可以添加benchmark
+* 可以使用vscode attach上去，进行调试，也可以使用vscode 的docker 插件管理compose
+
+
 [Postgres-XL Docker](https://github.com/tiredpixel/postgres-xl-docker) is a container image for [Postgres-XL](https://www.postgres-xl.org/), the scalable open-source [PostgreSQL](https://www.postgresql.org/)-based database cluster.
 
 The images allow for arbitrary database cluster topologies, allowing GTM, GTM Proxy, Coordinator, and Datanode nodes to be created and added as desired. Each service runs in its own container, communicating over a backend network. Coordinator nodes also connect to a frontend network.

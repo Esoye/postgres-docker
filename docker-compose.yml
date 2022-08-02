@@ -12,7 +12,7 @@ services:
     cap_add:
       - ALL
     volumes:
-      - db_gtm_1:/var/lib/postgresql
+      - db_gtm_1:/home/vscode/workspace
     networks:
       - db_a
     healthcheck:
@@ -33,7 +33,7 @@ services:
     cap_add:
       - ALL
     volumes:
-      - db_coord_1:/var/lib/postgresql
+      - db_coord_1:/home/vscode/workspace
     depends_on:
       - db_gtm_1
     networks:
@@ -57,7 +57,7 @@ services:
     cap_add:
       - ALL
     volumes:
-      - db_coord_2:/var/lib/postgresql
+      - db_coord_2:/home/vscode/workspace
     depends_on:
       - db_gtm_1
     networks:
@@ -83,7 +83,7 @@ services:
     depends_on:
       - db_gtm_1
     volumes:
-      - db_data_1:/var/lib/postgresql
+      - db_data_1:/home/vscode/workspace
     networks:
       - db_a
       - db_b
@@ -107,7 +107,7 @@ services:
     depends_on:
       - db_gtm_1
     volumes:
-      - db_data_2:/var/lib/postgresql
+      - db_data_2:/home/vscode/workspace
     networks:
       - db_a
       - db_b

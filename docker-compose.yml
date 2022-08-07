@@ -1,27 +1,28 @@
 version: "3"
 services:
-  db_gtm_1:
+  db_gtm:
     environment:
       - PG_HOST=0.0.0.0
-      - PG_NODE=gtm_1
+      - PG_NODE=gtm
       - PG_PORT=6666
     build: .
-    hostname: db_gtm_1
+    hostname: db_gtm
     command: docker-cmd-gtm
     entrypoint: docker-entrypoint-gtm
-    cap_add:
-      - ALL
+    # cap_add:
+    #   - ALL
     volumes:
-      - db_gtm_1:/home/vscode/workspace
-    networks:
-      - db_a
+      - db_gtm:/home/vscode/workspace
+    # networks:
+    #   - db_a
+      # - db_b
     healthcheck:
       test: ["CMD", "docker-healthcheck-gtm"]
   db_coord_1:
     ports:
       - "25432:5432"
     environment:
-      - PG_GTM_HOST=db_gtm_1
+      - PG_GTM_HOST=db_gtm
       - PG_GTM_PORT=6666
       - PG_HOST=0.0.0.0
       - PG_NODE=coord_1
@@ -30,22 +31,22 @@ services:
     hostname: db_coord_1
     command: docker-cmd-coord
     entrypoint: docker-entrypoint-coord
-    cap_add:
-      - ALL
+    # cap_add:
+    #   - ALL
     volumes:
       - db_coord_1:/home/vscode/workspace
     depends_on:
-      - db_gtm_1
-    networks:
-      - db_a
-      - db_b
+      - db_gtm
+    # networks:
+    #   - db_a
+      # - db_b
     healthcheck:
       test: ["CMD", "docker-healthcheck-coord"]
   db_coord_2:
     ports:
       - "25433:5432"
     environment:
-      - PG_GTM_HOST=db_gtm_1
+      - PG_GTM_HOST=db_gtm
       - PG_GTM_PORT=6666
       - PG_HOST=0.0.0.0
       - PG_NODE=coord_2
@@ -54,22 +55,22 @@ services:
     hostname: db_coord_2
     command: docker-cmd-coord
     entrypoint: docker-entrypoint-coord
-    cap_add:
-      - ALL
+    # cap_add:
+    #   - ALL
     volumes:
       - db_coord_2:/home/vscode/workspace
     depends_on:
-      - db_gtm_1
-    networks:
-      - db_a
-      - db_b
+      - db_gtm
+    # networks:
+    #   - db_a
+      # - db_b
     healthcheck:
       test: ["CMD", "docker-healthcheck-coord"]
   db_data_1:
     ports:
       - "25434:5432"
     environment:
-      - PG_GTM_HOST=db_gtm_1
+      - PG_GTM_HOST=db_gtm
       - PG_GTM_PORT=6666
       - PG_HOST=0.0.0.0
       - PG_NODE=data_1
@@ -78,22 +79,22 @@ services:
     hostname: db_data_1
     command: docker-cmd-data
     entrypoint: docker-entrypoint-data
-    cap_add:
-      - ALL
+    # cap_add:
+    #   - ALL
     depends_on:
-      - db_gtm_1
+      - db_gtm
     volumes:
       - db_data_1:/home/vscode/workspace
-    networks:
-      - db_a
-      - db_b
+    # networks:
+    #   - db_a
+      # - db_b
     healthcheck:
       test: ["CMD", "docker-healthcheck-data"]
   db_data_2:
     ports:
       - "25435:5432"
     environment:
-      - PG_GTM_HOST=db_gtm_1
+      - PG_GTM_HOST=db_gtm
       - PG_GTM_PORT=6666
       - PG_HOST=0.0.0.0
       - PG_NODE=data_2
@@ -102,25 +103,25 @@ services:
     hostname: db_data_2
     command: docker-cmd-data
     entrypoint: docker-entrypoint-data
-    cap_add:
-      - ALL
+    # cap_add:
+    #   - ALL
     depends_on:
-      - db_gtm_1
+      - db_gtm
     volumes:
       - db_data_2:/home/vscode/workspace
-    networks:
-      - db_a
-      - db_b
+    # networks:
+    #   - db_a
+      # - db_b
     healthcheck:
       test: ["CMD", "docker-healthcheck-data"]
 volumes:
-  db_gtm_1: {}
+  db_gtm: {}
   db_coord_1: {}
   db_coord_2: {}
   db_data_1: {}
   db_data_2: {}
-networks:
-  db_a:
-    internal: true
-  db_b:
-    internal: true
+# networks:
+#   db_a:
+#     internal: true
+#   # db_b:
+  #   internal: true

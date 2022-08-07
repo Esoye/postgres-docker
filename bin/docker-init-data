@@ -4,30 +4,14 @@ initdb \
     -D "${PGDATA}" \
     --nodename="${PG_NODE}"
 
-nets=($(ip -o -f inet addr show | awk '/scope global/ {print $4}' |
-    sort -V | xargs))
-
-
-echo "pg_hba: adding host 0.0.0.0/0 trust all"
-echo "host    all    all    all    trust" > \
-     "${PGDATA}/pg_hba.conf"
-
-echo "pg_hba: adding local   all  trust"
-echo "local   all   all   trust" >> \
-     "${PGDATA}/pg_hba.conf"
-#
-echo "pg_hba: adding 127.0.0.1/32   all  trust"
-echo "host	all	all	127.0.0.1/32	trust" >> \
-    "${PGDATA}/pg_hba.conf"
-
-echo "pg_hba: adding pgpool  all  trust"
-echo "host	all	all	pgpool	trust" >> \
-    "${PGDATA}/pg_hba.conf"
-
+nets=($(ip -o -f inet addr show | awk '/scope global/ {print $4}' | sort -V | xargs))
 
 echo "pg_hba: adding host trust ${nets[0]}"
-echo "host	all	all	${nets[0]}	trust" >> \
-    "${PGDATA}/pg_hba.conf"
+echo "host    all   all   db_${PG_NODE}  trust" >> "${PGDATA}/pg_hba.conf"
+echo "host    all   all   0.0.0.0/0   trust" >> "${PGDATA}/pg_hba.conf"
 
 
-#echo "host all all 0.0.0.0/32 trust" > "${PGDATA}/pg_hba.conf"
+echo -e "listen_addresses = '*'\n\
+gtm_host = 'db_gtm'\n\
+gtm_port = 6666\n\
+log_connections = on" >> "${PGDATA}/postgresql.conf"

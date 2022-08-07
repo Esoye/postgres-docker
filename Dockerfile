@@ -34,7 +34,9 @@ RUN apt-get install -y flex \
     libssh2-1-dev \
     make \
     gcc \
-    g++
+    g++ \
+    iputils-ping \
+    vim
 
 RUN apt clean all
 
